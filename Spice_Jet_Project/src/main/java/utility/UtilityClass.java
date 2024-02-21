@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -28,6 +30,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 //BestBuy
@@ -48,6 +51,8 @@ public class UtilityClass {
 		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
+		options.addArguments("--disable-notifications");
+		
 		switch (browser.toLowerCase()) {
 		case "chrome":
 			driver = new ChromeDriver(options);
@@ -184,24 +189,15 @@ public class UtilityClass {
 	}
 	public WebElement getElementFormList(List<WebElement> elements,String str) {
 //		
-		return  elements.stream().filter(m->m.getText().equalsIgnoreCase(str)).findAny().get();
-		
-		
-		
-		//WebElement elem=null;
-//		for(WebElement element :elements) {
-//			if(element.getText().equalsIgnoreCase(str)){
-//				elem=element;
-//				break;
-//			}
-//		}
-//		return elem;
+		return  elements.stream().filter(m->m.getText().equalsIgnoreCase(str)).findFirst().get();
+	
+
 	}
 	
 	
 	//SendKeys
 	public void sendKeys(WebElement element,String string) {
-		element.sendKeys(string);
+		element.sendKeys(string,Keys.TAB);
 		
 		
 	}
@@ -264,5 +260,55 @@ public class UtilityClass {
     	action=new Actions(driver);
 		action.moveToElement(element).keyDown(Keys.CONTROL).click().build().perform();
     }
+ 
+    
+    
+    
+    //-----------------------Select dropdowns-----------------------------//
+    public void selectDropDownUsingText(WebElement element,String option) {
+    	Select select = new Select(element);
+    	select.selectByVisibleText(option);
+    	
+    }
+    public void selectDropDownUsingValue(WebElement element,String option) {
+    	Select select = new Select(element);
+    	select.selectByValue(option);
+    	
+    }
+    
+    
+    //-----------------------------Waits---------------------------//
+    
+    public void waitTillVisbilityofElement(WebElement element) {
+    	
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+    		wait.until(ExpectedConditions.visibilityOf(element));
+    }
+    
+    public void waitTillInVisbilityofElement(WebElement element) {
+    	
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        		wait.until(ExpectedConditions.invisibilityOf(element));
+        }
+    
+  
+    
+    //------------date -----------------------------
+    
+	public String[] dateChecker(String date) throws Exception {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MMMM/yyyy");
+		try {
+			formatter.setLenient(false);
+			String strDate = formatter.format(formatter.parse(date));
+			System.out.println(strDate);
+			String[] strArray = strDate.split("/");
+			System.out.println(Arrays.toString(strArray));
+			return strArray;
+		} catch (Exception e) {
+			throw new Exception("Invalid date formatt");
+		}
+	}
+    
     
 }

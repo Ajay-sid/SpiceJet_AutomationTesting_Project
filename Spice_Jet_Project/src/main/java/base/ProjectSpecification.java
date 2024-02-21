@@ -28,7 +28,7 @@ import org.testng.annotations.Parameters;
 
 import utility.UtilityClass;
 
-public class ProjectSpec extends UtilityClass implements ITestListener{
+public class ProjectSpecification extends UtilityClass implements ITestListener{
 	
 	
 	
@@ -60,7 +60,7 @@ public class ProjectSpec extends UtilityClass implements ITestListener{
 	}
 	
 
-	@BeforeTest()
+	//@BeforeTest()
 	public void propertiesLoad() throws IOException {
 		
 		 file = new File("src/main/java/property/data.properties");
@@ -108,9 +108,9 @@ public class ProjectSpec extends UtilityClass implements ITestListener{
 	
 	@AfterMethod()
 	public void tear(ITestResult result){
-		if(result.getStatus()==ITestResult.FAILURE) {
-			captureScreenshot(result.getTestContext().getName()+"_"+result.getMethod().getMethodName()+".jpg");
-		}
+//		if(result.getStatus()==ITestResult.FAILURE) {
+//			captureScreenshot(result.getTestContext().getName()+"_"+result.getMethod().getMethodName()+".jpg");
+//		}
 	close();
 	}
 	
